@@ -19,6 +19,15 @@ class Download(object):
             #  id      value
             #   1      {"finished":1,"remaining":2}
             #   2      {"finished":3,"remaining":4}
+            conn = psycopg2.connect(database="downloads", user = "postgres", password = "amn", host = "127.0.0.1", port = "5432")
+            
+            cur=conn.cursor()
+            query=sql.SQL('''alter  download_datas set values=%s where id=%s''')
+            cur.execute(query,(value,u_id))
+            cur.execute()
+            cur.commit()
+            cur.close()
+
         except KeyError:
             # query = f"update table set value = value"
             STATUS_DICT[self.u_id] = value
