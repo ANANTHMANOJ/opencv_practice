@@ -19,8 +19,16 @@ def user_download():
     cur=conn.cursor()
     cur.execute()
     # its better to insert into database and then have that id as unique id
+    cur=conn.cursor()
+    cur.execute("select count(*) from download_datas")
+    rows=cur.fetchone()
+    u_id=rows[0]+1
+    query = sql.SQL('''insert into download_datas (id) values (%s)''')
+    cur.execute (query, (u_id))
+    conn.commit()
+    conn.close()
     msg = f"your file is downloading!!!!!!!!!!! and file url is : {url}"
-    u_id = 2
+    #u_id = 2
     download_obj = Download(u_id, url)
     download_obj.downloads()
     return msg
