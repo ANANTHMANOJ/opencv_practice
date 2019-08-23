@@ -1,5 +1,7 @@
 import wget
 from time import sleep
+import psycopg2
+import json
 
 STATUS_DICT = dict()
 
@@ -22,11 +24,13 @@ class Download(object):
             conn = psycopg2.connect(database="downloads", user = "postgres", password = "amn", host = "127.0.0.1", port = "5432")
             
             cur=conn.cursor()
-            query=sql.SQL('''alter  download_datas set values=%s where id=%s''')
-            cur.execute(query,(value,u_id))
-            cur.execute()
-            cur.commit()
-            cur.close()
+            self.u_id=str(self.u_id)
+            
+            value=json.dumps(value)
+            query='''update  download_datas set value=%s where uid=%s'''
+            cur.execute(query,(value,self.u_id))
+            conn.commit()
+            conn.close()
 
         except KeyError:
             # query = f"update table set value = value"
@@ -45,6 +49,15 @@ class DownloadStatus(object):
         # query the database where the id = u_id
         # query = select value from table where id = u_id
         # then return the value
-        return value
+        conn = psycopg2.connect(database="downloads", user = "postgres", password = "amn", host = "127.0.0.1", port = "5432")
+        cur=conn.cursor()
+        query='''select value from download_datas where uid=%s'''
+        cur.execute(query,(self.u_id))
+        rows=cur.fetchone()
+        
+        conn.commit()
+        conn.close()
+        print (rows[0])
+        return rows[0]
 
 
