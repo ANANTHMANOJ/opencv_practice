@@ -1,10 +1,10 @@
-from flask import Flask                                 #header files for flask
+from flask import Flask                                 #api for flask
 from flask import request
 from flask_limiter import Limiter 
 from flask_limiter.util import get_remote_address
-import psycopg2                                         #header file for connecting with POSTGRESQL
+import psycopg2                                         #api for connecting with POSTGRESQL
 from views import Download, DownloadStatus              #importing the python script having required classes
-import json                                             #header file to import json
+import json                                             #api to import json
 
 app = Flask(__name__)
 limiter= Limiter(                                       #initializing for rate limits
