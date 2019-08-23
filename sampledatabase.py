@@ -47,3 +47,7 @@ msg3='''
 </body>
 </html>
 >'''
+if row[0] ==0:
+  return msg1+msg3
+else:
+  return msg1+msg2+msg3
